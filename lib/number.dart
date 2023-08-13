@@ -1,5 +1,6 @@
 //number.dart
 import'package:flutter/material.dart';
+import 'package:project1/profile.dart';
 
 class Number extends StatelessWidget {
   const Number({Key? key}) : super(key: key);
@@ -64,90 +65,101 @@ class Number extends StatelessWidget {
               height:  58*fem,
               child:
               Stack(
-                children:  [
-                Positioned(
-                // countryregionxLq (1:300)
-                left:  0*fem,
-                top:  0*fem,
-                child:
-                Container(
-                  padding:  EdgeInsets.fromLTRB(165*fem, 0*fem, 30*fem, 0*fem),
-                  width:  295*fem,
-                  height:  58*fem,
-                  decoration:  BoxDecoration (
-                      border:  Border.all(color :Color(0xffc2cad7)),
-                  color:  Color(0xffc2cad7),
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(165 * fem, 0, 30 * fem, 0),
+                    width: 295 * fem,
+                    height: 58 * fem,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffc2cad7)),
+                      color: Color(0xffc2cad7),
+                      borderRadius: BorderRadius.circular(15 * fem),
+                    ),
+                    child: Container(
+                      // frame1qQd (1:302)
+                      width: double.infinity,
+                      height: 56 * fem,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profile()),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: 56 * fem,
+                        decoration: BoxDecoration(
+                          color: Color(0xffc2cad7),
+                          borderRadius: BorderRadius.circular(15 * fem),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Use Phone Number',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Sk-Modernist',
+                              fontSize: 16 * fem,
+                              fontWeight: FontWeight.w700,
+                              height: 1.5,
+                              color: Color(0xffcc323f),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+            ),
+            TextButton(
+              // btncontinueu9b (1:190)
+              onPressed:  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              style:  TextButton.styleFrom (
+                padding:  EdgeInsets.zero,
+              ),
+              child:
+              Container(
+                width:  double.infinity,
+                height:  56*fem,
+                decoration:  BoxDecoration (
+                  color:  Color(0xffcc323f),
                   borderRadius:  BorderRadius.circular(15*fem),
                 ),
                 child:
-                Container(
-                  // frame1qQd (1:302)
-                  width:  double.infinity,
-                  height:  100*fem,
-                ),
-              ),
-            ),
-            Positioned(
-              // usephonenumberbeh (1:303)
-              left:  78.6623535156*fem,
-              top:  24.0239868164*fem,
-              child:
-              Align(
-                child:
-                SizedBox(
-                  width:  138.15*fem,
-                  height:  13.95*fem,
+                Center(
                   child:
-                  Text("Use phone number",
-                      style: TextStyle(
-                        color: Color(0xffcc323f),
-                        fontFamily: 'Sk-Modernist',
-                        fontSize: 16 * fem,
-                        fontWeight: FontWeight.w700,
-                        height: 1.5,
+                  Text(
+                    'Continue',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Sk-Modernist',
+                      fontSize: 16 * fem,
+                      fontWeight: FontWeight.w700,
+                      height: 1.5,
+                      color: Color(0xffc2cad7),
                     ),
                   ),
+
                 ),
               ),
             ),
           ],
         ),
       ),
-      TextButton(
-        // btncontinueu9b (1:190)
-        onPressed:  () {},
-        style:  TextButton.styleFrom (
-          padding:  EdgeInsets.zero,
-        ),
-        child:
-        Container(
-          width:  double.infinity,
-          height:  56*fem,
-          decoration:  BoxDecoration (
-            color:  Color(0xffcc323f),
-            borderRadius:  BorderRadius.circular(15*fem),
-          ),
-          child:
-          Center(
-            child:
-            Text(
-              'Continue',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Sk-Modernist',
-                fontSize: 16 * fem,
-                fontWeight: FontWeight.w700,
-                height: 1.5,
-                color: Color(0xffc2cad7),
-              ),
-            ),
-
-          ),
-        ),
-      ),
-      ],
-    ),
-    ),
     );
   }
 }
