@@ -1,6 +1,6 @@
 //signup.dart
+import 'package:couplecupid/number.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/number.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -173,7 +173,7 @@ class Signup extends StatelessWidget {
                             // Add your desired functionality here
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // Set the button background color
+                            backgroundColor: Colors.transparent, // Set the button background color
                             elevation: 0, // Remove the button shadow
                           ),
                           child: Container(
@@ -181,7 +181,7 @@ class Signup extends StatelessWidget {
                             width: 28 * fem,
                             height: 28 * fem,
                             child: Image(
-                                image: AssetImage("assets/facebook.png"),
+                              image: AssetImage("assets/facebook.png"),
                               width: 28 *fem,
                               height: 28 * fem,
                             ),
@@ -192,7 +192,7 @@ class Signup extends StatelessWidget {
                             // Add your desired functionality here
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // Set the button background color
+                            backgroundColor: Colors.transparent, // Set the button background color
                             elevation: 0, // Remove the button shadow
                           ),
                           child: Container(
@@ -211,7 +211,7 @@ class Signup extends StatelessWidget {
                             // Add your desired functionality here
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, // Set the button background color
+                            backgroundColor: Colors.transparent, // Set the button background color
                             elevation: 0, // Remove the button shadow
                           ),
                           child: Container(
@@ -246,7 +246,7 @@ class Signup extends StatelessWidget {
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
-                        primary: Colors.transparent, // Set the button text color
+                        backgroundColor: Colors.transparent, // Set the button text color
                       ),
                       child: Text(
                         'Terms of use',

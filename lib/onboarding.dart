@@ -1,6 +1,7 @@
+//onboarding.dart
+import 'package:couplecupid/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:project1/signup.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({Key? key}) : super(key: key);

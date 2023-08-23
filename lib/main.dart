@@ -1,9 +1,9 @@
+//main.dart
+import 'package:couplecupid/onboarding.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/onboarding.dart';
-import 'package:lottie/lottie.dart';
 
 
-void main() {
+void main(){
   runApp(const MyApp());
 }
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Onboarding(),
     );

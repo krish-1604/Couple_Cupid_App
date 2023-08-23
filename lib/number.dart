@@ -1,6 +1,6 @@
 //number.dart
+import 'package:couplecupid/profile.dart';
 import'package:flutter/material.dart';
-import 'package:project1/profile.dart';
 
 class Number extends StatelessWidget {
   const Number({Key? key}) : super(key: key);
