@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:couplecupid/number.dart';
-import 'package:lottie/lottie.dart'; // Import the Lottie package
+import 'package:lottie/lottie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> with TickerProviderStateMixin {
   late TabController _tabController;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -24,18 +26,18 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
 
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.fromLTRB(40 * fem, 20 * fem, 40 * fem, 48 * fem), // Adjusted top padding
+        padding: EdgeInsets.fromLTRB(40 * fem, 20 * fem, 40 * fem, 48 * fem),
         decoration: BoxDecoration(
           color: Color(0xff000000),
         ),
         child: Column(
           children: [
-            SizedBox(height: 20), // Extra space here
+            SizedBox(height: 20),
             TabBar(
               controller: _tabController,
               indicatorColor: Colors.white,
               tabs: [
-                Tab(text: 'Sign Up'),
+                Tab(text: 'Sign up'),
                 Tab(text: 'Login'),
               ],
             ),
@@ -63,97 +65,153 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   }
 
   Widget _buildLoginTab(double fem) {
-    return ListView(
-      children: [
-        SizedBox(height: 300),
-        Container(
-          width: 200 * fem,
-          height: 200 * fem,
-          child: Lottie.asset(
-            'assets/login_animation.json', // Replace with the actual path to your animation file
-            width: 200 * fem,
-            height: 200 * fem,
-            fit: BoxFit.contain,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 4 * fem),
+          Container(
+            height: 300 * fem,
+            child: Lottie.asset(
+              'assets/LOGIN.json',
+              height: 300 * fem,
+              fit: BoxFit.contain,
+            ),
           ),
-        ),
-        SizedBox(height: 20 * fem), // Add spacing
-        Text(
-          'Or sign in with',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Sk-Modernist',
-            fontSize: 14 * fem,
-            fontWeight: FontWeight.w400,
-            height: 1.5 * fem,
-            color: Color(0xffc2cad7),
+
+          SizedBox(height: 20 * fem),
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Username/Email/Phone Number',
+              hintStyle: TextStyle(
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Color(0xffCC323F)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Color(0xffCC323F)),
+              ),
+            ),
+            style: TextStyle(color: Colors.white),
           ),
-        ),
-        SizedBox(height: 20 * fem), // Add more spacing
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // Add your desired functionality here (Facebook sign-in)
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xff1877F2),
-                padding: EdgeInsets.all(12 * fem),
+          SizedBox(height: 20 * fem),
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Password',
+              hintStyle: TextStyle(
+                color: Colors.white,
               ),
-              child: Text(
-                'Facebook',
-                style: TextStyle(
-                  fontFamily: 'Sk-Modernist',
-                  fontSize: 14 * fem,
-                  fontWeight: FontWeight.w700,
-                  height: 1.5 * fem,
-                  color: Colors.white,
-                ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Color(0xffCC323F)),
               ),
-            ),
-            SizedBox(width: 10 * fem),
-            ElevatedButton(
-              onPressed: () {
-                // Add your desired functionality here (Google sign-in)
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffDB4437),
-                padding: EdgeInsets.all(12 * fem),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Color(0xffCC323F)),
               ),
-              child: Text(
-                'Google',
-                style: TextStyle(
-                  fontFamily: 'Sk-Modernist',
-                  fontSize: 14 * fem,
-                  fontWeight: FontWeight.w700,
-                  height: 1.5 * fem,
-                  color: Colors.white,
-                ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+                icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                color: Colors.white,
               ),
             ),
-            SizedBox(width: 10 * fem),
-            ElevatedButton(
-              onPressed: () {
-                // Add your desired functionality here (Instagram sign-in)
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffC13584),
-                padding: EdgeInsets.all(12 * fem),
-              ),
-              child: Text(
-                'Instagram',
-                style: TextStyle(
-                  fontFamily: 'Sk-Modernist',
-                  fontSize: 14 * fem,
-                  fontWeight: FontWeight.w700,
-                  height: 1.5 * fem,
-                  color: Colors.white,
+            obscureText: !_passwordVisible,
+            style: TextStyle(color: Colors.white),
+          ),
+          SizedBox(height: 10 * fem),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  // Add your forgot password functionality here
+                },
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(
+                    color: Color(0xffCC323F),
+                  ),
                 ),
               ),
+            ],
+          ),
+          SizedBox(height: 20 * fem),
+          ElevatedButton(
+            onPressed: () {
+              // Add your sign-in functionality here
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xffCC323F),
+              padding: EdgeInsets.all(12 * fem),
             ),
-          ],
-        ),
-      ],
+            child: Text(
+              'Sign In',
+              style: TextStyle(
+                fontFamily: 'Sk-Modernist',
+                fontSize: 14 * fem,
+                fontWeight: FontWeight.w700,
+                height: 1.5 * fem,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(height: 20 * fem),
+          Text(
+            'Or sign in with',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Sk-Modernist',
+              fontSize: 14 * fem,
+              fontWeight: FontWeight.w400,
+              height: 1.5 * fem,
+              color: Color(0xffcc323f),
+            ),
+          ),
+          SizedBox(height: 20 * fem),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Add your desired functionality here (Facebook sign-in)
+                },
+                icon: Icon(
+                  Icons.facebook,
+                  color: Color(0xff1877F2),
+                  size: 30 * fem,
+                ),
+              ),
+              SizedBox(width: 20 * fem),
+              IconButton(
+                onPressed: () {
+                  // Add your desired functionality here (Instagram sign-in)
+                },
+                icon: FaIcon(FontAwesomeIcons.instagram, color: Colors.pinkAccent, size: 30 * fem),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Signup(),
     );
   }
 }
