@@ -224,7 +224,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 ),
               ),
             ),
-          SizedBox(height: 30 * fem),
+          SizedBox(height: 20 * fem),
           Row(
             children: [
               Container(
@@ -264,7 +264,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             ],
           ),
 
-          SizedBox(height: 36 * fem),
+          SizedBox(height: 20 * fem),
           ElevatedButton(
             onPressed: _isAgreeChecked
                 ? () {
@@ -295,7 +295,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               ),
             ),
           ),
-          SizedBox(height: 20 * fem),
+          SizedBox(height: 40 * fem),
           Text(
             'Or sign up with',
             textAlign: TextAlign.center,
@@ -307,7 +307,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               color: Color(0xffcc323f),
             ),
           ),
-          SizedBox(height: 23 * fem),
+          SizedBox(height: 20 * fem),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
