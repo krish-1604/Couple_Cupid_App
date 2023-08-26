@@ -35,18 +35,18 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             SizedBox(height: 20),
             TabBar(
               controller: _tabController,
-              indicatorColor: Colors.white,
+              indicatorColor: Color(0xffCC323F),
               tabs: [
-                Tab(text: 'Sign up'),
                 Tab(text: 'Login'),
+                Tab(text: 'Sign Up'),
               ],
             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildSignUpTab(fem),
                   _buildLoginTab(fem),
+                  _buildSignUpTab(fem),
                 ],
               ),
             ),
@@ -193,7 +193,14 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 onPressed: () {
                   // Add your desired functionality here (Instagram sign-in)
                 },
-                icon: FaIcon(FontAwesomeIcons.instagram, color: Colors.pinkAccent, size: 30 * fem),
+                icon: FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 27 * fem),
+              ),
+              SizedBox(width: 20 * fem),
+              IconButton(
+                onPressed: () {
+                  // Add your desired functionality here (Apple sign-in)
+                },
+                icon: FaIcon(FontAwesomeIcons.apple, color: Colors.grey, size: 30 * fem),
               ),
             ],
           ),
