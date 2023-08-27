@@ -1,3 +1,6 @@
+import 'package:couplecupid/profile.dart';
+import 'package:couplecupid/services/firebase_services.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:couplecupid/number.dart';
 import 'package:lottie/lottie.dart';
@@ -440,8 +443,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               ),
               SizedBox(width: 20 * fem),
               IconButton(
-                onPressed: () {
-                  // Add your desired functionality here (Google signup)
+                onPressed: () async{
+                  await FirebaseServices().signInWithGoogle();
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=>Profile())
+                  );
                 },
                 icon: FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 27 * fem),
               ),

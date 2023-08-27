@@ -33,6 +33,10 @@ dependencies:
   lottie: ^1.2.1
   image_picker: any
   font_awesome_flutter: ^10.4.0
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.8.0
+  google_sign_in: ^6.1.4
+
 
 
   # The following adds the Cupertino Icons font to your application.
