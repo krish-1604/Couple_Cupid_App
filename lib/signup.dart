@@ -16,11 +16,50 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   String _password = '';
   String _confirmPassword = '';
   String _passwordError = '';
+  String _phoneNumber = '';
+  String _phoneNumberError = '';
+  String _email = '';
+  String _emailError = '';
+  final TextEditingController _usernameController = TextEditingController();
+  String _usernameError = '';
+  bool canSignUp() {
+    return _usernameController.text.isNotEmpty &&
+        _password.isNotEmpty &&
+        _phoneNumber.isNotEmpty &&
+        _email.isNotEmpty &&
+        _phoneNumberError.isEmpty &&
+        _emailError.isEmpty &&
+        _confirmPassword.isNotEmpty &&
+        _isAgreeChecked &&
+        _password == _confirmPassword &&
+        _usernameError.isEmpty &&
+        _passwordError.isEmpty &&
+        _usernameController.text.length >= 2 &&
+        _password.length >= 8 &&
+        _password.length <= 18;
+  }
+  bool _isValidEmailFormat(String email)  {
+    // Use a regular expression to validate email format
+    final RegExp emailRegex = RegExp(
+      r'^[\w\.-]+@[\w\.-]+\.\w+$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
+  bool _isValidPhoneNumberFormat(String phoneNumber) {
+    // Use a regular expression to validate phone number format
+    final RegExp phoneRegex = RegExp(
+      r'^[0-9]{10}$', // Assuming you're validating a 10-digit phone number
+    );
+    return phoneRegex.hasMatch(phoneNumber);
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
+
   @override
   Widget build(BuildContext context) {
     double fem = 1.0;
@@ -55,6 +94,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget _buildSignUpTab(double fem) {
     return SingleChildScrollView(
       child: Column(
@@ -62,6 +102,16 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         children: [
           SizedBox(height: 80 * fem),
           TextField(
+            controller: _usernameController,
+            onChanged: (text) {
+              setState(() {
+                if (text.length < 2) {
+                  _usernameError = 'Username must be at least 2 characters long';
+                } else {
+                  _usernameError = '';
+                }
+              });
+            },
             decoration: InputDecoration(
               hintText: 'Username',
               hintStyle: TextStyle(
@@ -78,6 +128,20 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             ),
             style: TextStyle(color: Colors.white),
           ),
+          if (_usernameError.isNotEmpty)
+            Column(
+              children: [
+                SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child:Text(
+                    _usernameError,
+                    style:
+                    TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
           SizedBox(height: 20 * fem),
           TextField(
             decoration: InputDecoration(
@@ -96,7 +160,29 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             ),
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.white),
+            onChanged: (value) {
+              setState(() {
+                _email = value;
+                _emailError = '';
+
+                // Validate email format
+                if (!_isValidEmailFormat(value)) {
+                  _emailError = 'Invalid email format';
+                }
+              });
+            },
           ),
+          if (_emailError.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _emailError,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14 * fem,
+                ),
+              ),
+            ),
           SizedBox(height: 20 * fem),
           Row(
             children: [
@@ -140,15 +226,41 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   ),
                   keyboardType: TextInputType.phone,
                   style: TextStyle(color: Colors.white),
+                  onChanged: (value) {
+                    setState(() {
+                      _phoneNumber = value;
+                      _phoneNumberError = '';
+
+                      // Validate phone number format
+                      if (!_isValidPhoneNumberFormat(value)) {
+                        _phoneNumberError = 'Invalid phone number format';
+                      }
+                    });
+                  },
                 ),
               ),
             ],
           ),
+          if (_phoneNumberError.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _phoneNumberError,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14 * fem,
+                ),
+              ),
+            ),
           SizedBox(height: 20 * fem),
           TextField(
             onChanged: (value) {
               setState(() {
                 _password = value;
+                _passwordError = '';
+                if (value.length < 8 || value.length > 18) {
+                  _passwordError = 'Password must be between 8 and 18 characters.';
+                }
               });
             },
             decoration: InputDecoration(
@@ -182,7 +294,17 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             onChanged: (value) {
               setState(() {
                 _confirmPassword = value;
-                _passwordError = ''; // Clear the error message
+                _passwordError = '';
+                if (value.length < 8 || value.length > 18) {
+                  _passwordError = 'Password must be between 8 and 18 characters.';
+                }
+                if (_confirmPassword != _password) {
+                  setState(() {
+                    _passwordError =
+                    'Passwords do not match. Please make sure the passwords match.';
+                  });
+                  return;
+                }
               });
             },
             decoration: InputDecoration(
@@ -208,7 +330,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 color: Colors.white,
               ),
             ),
-            obscureText: !_confirmPasswordVisible, // Use _confirmPasswordVisible here
+            obscureText: !_confirmPasswordVisible,
             style: TextStyle(color: Colors.white),
           ),
 
@@ -229,13 +351,13 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.red), // Red border
-                  borderRadius: BorderRadius.circular(4.0), // Adjust the border radius as needed
+                  border: Border.all(color: Colors.red),
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
-                padding: EdgeInsets.all(2.0), // Adjust the padding as needed
+                padding: EdgeInsets.all(2.0),
                 child: SizedBox(
-                  width: 13.0, // Adjust the size of the checkbox
-                  height: 13.0, // Adjust the size of the checkbox
+                  width: 13.0,
+                  height: 13.0,
                   child: Checkbox(
                     value: _isAgreeChecked,
                     onChanged: (value) {
@@ -244,12 +366,12 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                       });
                     },
                     activeColor: Colors.red,
-                    checkColor: Colors.white, // Color of the checkmark when checked
+                    checkColor: Colors.white,
                     fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
                       if (states.contains(MaterialState.selected)) {
                         return Colors.red; // Color of the checkbox when checked
                       }
-                      return Colors.transparent; // Color of the checkbox when unchecked
+                      return Colors.transparent;
                     }),
                   ),
                 ),
@@ -266,21 +388,16 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
 
           SizedBox(height: 36 * fem),
           ElevatedButton(
-            onPressed: _isAgreeChecked
+            onPressed: canSignUp() // Enable the button based on conditions
                 ? () {
-              if (_confirmPassword != _password) {
-                setState(() {
-                  _passwordError = 'Passwords do not match. Please make sure the passwords match.';
-                });
-                return; // Don't proceed with signup
-              }
+
               // Add your sign-up functionality here
             }
-                : null, // Disable button if checkbox is not checked
+                : null,
             style: ButtonStyle(
-              backgroundColor: _isAgreeChecked
-                  ? MaterialStateProperty.all<Color>(Color(0xffCC323F)) // Enabled color
-                  : MaterialStateProperty.all<Color>(Colors.grey),      // Disabled color
+              backgroundColor: canSignUp()
+                  ? MaterialStateProperty.all<Color>(Color(0xffCC323F))
+                  : MaterialStateProperty.all<Color>(Colors.grey),
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(12 * fem)),
             ),
 
@@ -359,7 +476,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           SizedBox(height: 20 * fem),
           TextField(
             decoration: InputDecoration(
-              hintText: 'Username/Email/Phone Number',
+              hintText: 'Email/Phone Number',
               hintStyle: TextStyle(
                 color: Colors.white,
               ),
@@ -429,7 +546,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               padding: EdgeInsets.all(12 * fem),
             ),
             child: Text(
-              'Sign In',
+              'Log In',
               style: TextStyle(
                 fontFamily: 'Sk-Modernist',
                 fontSize: 14 * fem,
