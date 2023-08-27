@@ -118,7 +118,7 @@ class _ProfileState extends State<Profile> {
                             child: ClipOval(
                               child: _showAvatar
                                   ? Image.asset(
-                                "assets/Profile.png",
+                                "assets/avatar.jpg",
                                 width: 200 , // Match the width
                                 height: 150, // Match the height
                                 fit: BoxFit.cover,

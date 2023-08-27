@@ -1,6 +1,4 @@
-import 'package:couplecupid/profile.dart';
 import 'package:couplecupid/services/firebase_services.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:couplecupid/number.dart';
 import 'package:lottie/lottie.dart';
@@ -393,8 +391,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: canSignUp() // Enable the button based on conditions
                 ? () {
-
-              // Add your sign-up functionality here
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=>Number()));
             }
                 : null,
             style: ButtonStyle(
@@ -446,7 +444,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 onPressed: () async{
                   await FirebaseServices().signInWithGoogle();
                   Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>Profile())
+                  MaterialPageRoute(builder: (context)=>Number())
                   );
                 },
                 icon: FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 27 * fem),
@@ -545,7 +543,9 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           SizedBox(height: 20 * fem),
           ElevatedButton(
             onPressed: () {
-              // Add your sign-in functionality here
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> Number())
+              );
             },
             style: ElevatedButton.styleFrom(
               primary: Color(0xffCC323F),
