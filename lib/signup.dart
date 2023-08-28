@@ -1,6 +1,6 @@
 import 'package:couplecupid/services/firebase_services.dart';
 import 'package:flutter/material.dart';
-import 'package:couplecupid/number.dart';
+import 'package:couplecupid/otp.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -15,6 +15,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
   bool _isAgreeChecked = false;
+  String _loginEmail = '';
+  String _loginPassword = '';
   String _password = '';
   String _confirmPassword = '';
   String _passwordError = '';
@@ -41,6 +43,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         _password.length >= 8 &&
         _password.length <= 18;
   }
+  bool canLogIn() {
+    return _loginEmail.isNotEmpty && _loginPassword.isNotEmpty;
+  }
+
+
 
   bool _isValidEmailFormat(String email) {
     final RegExp emailRegex = RegExp(
@@ -383,7 +390,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: canSignUp()
                 ? () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Number()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OtpPage()));
             }
                 : null,
             style: ButtonStyle(
@@ -436,7 +443,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   if (signInSuccessful) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Number()),
+                      MaterialPageRoute(builder: (context) => OtpPage()),
                     );
                   }
                 },
@@ -472,6 +479,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ),
           SizedBox(height: 20 * fem),
           TextField(
+            onChanged: (value) {
+              setState(() {
+                _loginEmail = value;
+              });
+            },
             decoration: InputDecoration(
               hintText: 'Email/Phone Number',
               hintStyle: TextStyle(
@@ -490,6 +502,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ),
           SizedBox(height: 20 * fem),
           TextField(
+            onChanged: (value) {
+              setState(() {
+                _loginPassword = value;
+              });
+            },
             decoration: InputDecoration(
               hintText: 'Password',
               hintStyle: TextStyle(
@@ -535,12 +552,15 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ),
           SizedBox(height: 20 * fem),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Number()));
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Color(0xffCC323F),
-              padding: EdgeInsets.all(12 * fem),
+            onPressed: canLogIn() ? () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OtpPage()));
+            } : null,
+            style: ButtonStyle(
+              backgroundColor: canLogIn()
+                  ? MaterialStateProperty.all<Color>(Color(0xffCC323F))
+                  : MaterialStateProperty.all<Color>(Colors.grey),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(12 * fem)),
             ),
             child: Text(
               'Log In',
@@ -586,7 +606,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   if (signInSuccessful) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Number()),
+                      MaterialPageRoute(builder: (context) => OtpPage()),
                     );
                   }
                 },
