@@ -9,6 +9,7 @@ class Signup extends StatefulWidget {
   @override
   _SignupState createState() => _SignupState();
 }
+
 class _SignupState extends State<Signup> with TickerProviderStateMixin {
   late TabController _tabController;
   bool _passwordVisible = false;
@@ -23,6 +24,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   String _emailError = '';
   final TextEditingController _usernameController = TextEditingController();
   String _usernameError = '';
+
   bool canSignUp() {
     return _usernameController.text.isNotEmpty &&
         _password.isNotEmpty &&
@@ -39,8 +41,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
         _password.length >= 8 &&
         _password.length <= 18;
   }
-  bool _isValidEmailFormat(String email)  {
-    // Use a regular expression to validate email format
+
+  bool _isValidEmailFormat(String email) {
     final RegExp emailRegex = RegExp(
       r'^[\w\.-]+@[\w\.-]+\.\w+$',
     );
@@ -48,9 +50,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
   }
 
   bool _isValidPhoneNumberFormat(String phoneNumber) {
-    // Use a regular expression to validate phone number format
     final RegExp phoneRegex = RegExp(
-      r'^[0-9]{10}$', // Assuming you're validating a 10-digit phone number
+      r'^[0-9]{10}$',
     );
     return phoneRegex.hasMatch(phoneNumber);
   }
@@ -135,10 +136,9 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 SizedBox(height: 8),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:Text(
+                  child: Text(
                     _usernameError,
-                    style:
-                    TextStyle(color: Colors.red, fontSize: 12),
+                    style: TextStyle(color: Colors.red, fontSize: 12),
                   ),
                 ),
               ],
@@ -165,8 +165,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               setState(() {
                 _email = value;
                 _emailError = '';
-
-                // Validate email format
                 if (!_isValidEmailFormat(value)) {
                   _emailError = 'Invalid email format';
                 }
@@ -231,8 +229,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                     setState(() {
                       _phoneNumber = value;
                       _phoneNumberError = '';
-
-                      // Validate phone number format
                       if (!_isValidPhoneNumberFormat(value)) {
                         _phoneNumberError = 'Invalid phone number format';
                       }
@@ -301,8 +297,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                 }
                 if (_confirmPassword != _password) {
                   setState(() {
-                    _passwordError =
-                    'Passwords do not match. Please make sure the passwords match.';
+                    _passwordError = 'Passwords do not match. Please make sure the passwords match.';
                   });
                   return;
                 }
@@ -334,8 +329,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
             obscureText: !_confirmPasswordVisible,
             style: TextStyle(color: Colors.white),
           ),
-
-// Display error message if passwords don't match
           if (_passwordError.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -370,7 +363,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                     checkColor: Colors.white,
                     fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
                       if (states.contains(MaterialState.selected)) {
-                        return Colors.red; // Color of the checkbox when checked
+                        return Colors.red;
                       }
                       return Colors.transparent;
                     }),
@@ -386,13 +379,11 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               ),
             ],
           ),
-
           SizedBox(height: 36 * fem),
           ElevatedButton(
-            onPressed: canSignUp() // Enable the button based on conditions
+            onPressed: canSignUp()
                 ? () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>Number()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Number()));
             }
                 : null,
             style: ButtonStyle(
@@ -401,7 +392,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                   : MaterialStateProperty.all<Color>(Colors.grey),
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.all(12 * fem)),
             ),
-
             child: Text(
               'Sign Up',
               style: TextStyle(
@@ -441,11 +431,14 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               ),
               SizedBox(width: 20 * fem),
               IconButton(
-                onPressed: () async{
-                  await FirebaseServices().signInWithGoogle();
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>Number())
-                  );
+                onPressed: () async {
+                  bool signInSuccessful = await FirebaseServices().signInWithGoogle();
+                  if (signInSuccessful) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Number()),
+                    );
+                  }
                 },
                 icon: FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 27 * fem),
               ),
@@ -462,6 +455,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget _buildLoginTab(double fem) {
     return SingleChildScrollView(
       child: Column(
@@ -476,7 +470,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               fit: BoxFit.contain,
             ),
           ),
-
           SizedBox(height: 20 * fem),
           TextField(
             decoration: InputDecoration(
@@ -543,9 +536,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           SizedBox(height: 20 * fem),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> Number())
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Number()));
             },
             style: ElevatedButton.styleFrom(
               primary: Color(0xffCC323F),
@@ -590,15 +581,20 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
               ),
               SizedBox(width: 20 * fem),
               IconButton(
-                onPressed: () {
-                  // Add your desired functionality here (Instagram sign-in)
+                onPressed: () async {
+                  bool signInSuccessful = await FirebaseServices().signInWithGoogle();
+                  if (signInSuccessful) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Number()),
+                    );
+                  }
                 },
                 icon: FaIcon(FontAwesomeIcons.google, color: Colors.red, size: 27 * fem),
               ),
               SizedBox(width: 20 * fem),
               IconButton(
                 onPressed: () {
-                  // Add your desired functionality here (Apple sign-in)
                 },
                 icon: FaIcon(FontAwesomeIcons.apple, color: Colors.grey, size: 30 * fem),
               ),
@@ -606,17 +602,6 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           ),
         ],
       ),
-    );
-  }
-}
-void main() {
-  runApp(MyApp());
-}
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Signup(),
     );
   }
 }
