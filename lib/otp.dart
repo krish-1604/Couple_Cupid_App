@@ -1,4 +1,6 @@
+import 'package:couplecupid/gender.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class OtpPage extends StatefulWidget {
   @override
@@ -8,11 +10,20 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   int _remainingTime = 240;
   bool _isResendingOtp = false;
+  final _focusNodes = List.generate(4, (_) => FocusNode());
+  final _textControllers = List.generate(4, (_) => TextEditingController());
 
   @override
   void initState() {
     super.initState();
     startTimer();
+    for (int i = 0; i < _textControllers.length; i++) {
+      _textControllers[i].addListener(() {
+        if (_textControllers[i].text.length == 1 && i < _focusNodes.length - 1) {
+          _focusNodes[i + 1].requestFocus();
+        }
+      });
+    }
   }
 
   void startTimer() {
@@ -32,6 +43,11 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final remainingDuration = Duration(seconds: _remainingTime);
+    final minutes = remainingDuration.inMinutes;
+    final seconds = remainingDuration.inSeconds % 60;
+    final formattedTime = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -41,54 +57,86 @@ class _OtpPageState extends State<OtpPage> {
         backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Color(0xffCC323F)),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xff000000),
-        ),
-        padding: EdgeInsets.all(20),
-        child: Center(
+      body: SingleChildScrollView(  // Wrap with SingleChildScrollView
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color(0xff000000),
+          ),
+          padding: EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Lottie.asset(
+                'assets/ZNWa3TTTol.json', // Path to your animation JSON file
+                width: 360,
+                height: 360,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 20),
               Text(
-                'Please enter the OTP sent to your number and email.',
+                'Please enter the OTP sent to ( user number ) and ( user email ). Valid for 4 mins',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildOtpField(),
-                  SizedBox(width: 10),
-                  _buildOtpField(),
-                  SizedBox(width: 10),
-                  _buildOtpField(),
-                  SizedBox(width: 10),
-                  _buildOtpField(),
+                  for (int i = 0; i < _focusNodes.length; i++)
+                    ...[
+                      _buildOtpField(
+                          focusNode: _focusNodes[i],
+                          controller: _textControllers[i]),
+                      if (i != _focusNodes.length - 1) SizedBox(width: 10),
+                    ],
                 ],
               ),
-              SizedBox(height: 30),
-              Text(
-                _isResendingOtp
-                    ? 'Did not receive OTP? Tap to resend.'
-                    : 'Resend OTP in ${_remainingTime.toString()} seconds',
-                style: TextStyle(
-                  color: _isResendingOtp ? Colors.blue : Colors.grey,
-                  fontSize: 14,
+              SizedBox(height: 60),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Change your number or email',
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 1),
+              TextButton(
+                onPressed: _isResendingOtp
+                    ? () {
+                  // Implement your logic for resending the OTP here
+                }
+                    : null,
+                child: Text(
+                  _isResendingOtp
+                      ? 'Did not receive OTP? Tap to resend.'
+                      : 'Resend OTP in $formattedTime',
+                  style: TextStyle(
+                    color: _isResendingOtp ? Colors.white : Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
               ElevatedButton(
-                onPressed: _isResendingOtp ? () {} : null,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Gender()));
+                },
                 style: ButtonStyle(
-                  backgroundColor: _isResendingOtp
-                      ? MaterialStateProperty.all<Color>(Color(0xffCC323F))
-                      : MaterialStateProperty.all<Color>(Colors.grey),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Color(0xffCC323F),
+                  ),
                 ),
                 child: Text(
-                  'Resend OTP',
+                  'Submit OTP',
                   style: TextStyle(
                     fontFamily: 'Sk-Modernist',
                     fontSize: 16,
@@ -97,6 +145,7 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
               ),
+
             ],
           ),
         ),
@@ -104,7 +153,10 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
-  Widget _buildOtpField() {
+  Widget _buildOtpField({
+    required FocusNode focusNode,
+    required TextEditingController controller,
+  }) {
     return Container(
       width: 60,
       height: 60,
@@ -113,21 +165,20 @@ class _OtpPageState extends State<OtpPage> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextField(
+        focusNode: focusNode,
+        controller: controller,
         maxLength: 1,
         keyboardType: TextInputType.number,
         style: TextStyle(fontSize: 20, color: Colors.white),
         textAlign: TextAlign.center,
+        cursorColor: Colors.white,
         decoration: InputDecoration(
           counterText: '',
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-          ),
+          border: OutlineInputBorder(borderSide: BorderSide.none),
         ),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(home: OtpPage()));
-}
+void main() => runApp(MaterialApp(home: OtpPage()));

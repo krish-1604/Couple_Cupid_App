@@ -1,6 +1,7 @@
 import 'package:couplecupid/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:couplecupid/otp.dart';
+import 'package:couplecupid/Homepage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -553,7 +554,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           SizedBox(height: 20 * fem),
           ElevatedButton(
             onPressed: canLogIn() ? () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => OtpPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => DatingAppHomePage()));
             } : null,
             style: ButtonStyle(
               backgroundColor: canLogIn()
