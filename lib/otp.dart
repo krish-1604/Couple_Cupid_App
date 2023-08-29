@@ -1,4 +1,4 @@
-import 'package:couplecupid/gender.dart';
+import 'package:couplecupid/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,6 +12,10 @@ class _OtpPageState extends State<OtpPage> {
   bool _isResendingOtp = false;
   final _focusNodes = List.generate(4, (_) => FocusNode());
   final _textControllers = List.generate(4, (_) => TextEditingController());
+  bool _areAllFieldsFilled = false;
+  bool canSubmit() {
+    return _areAllFieldsFilled==true;
+  }
 
   @override
   void initState() {
@@ -19,6 +23,9 @@ class _OtpPageState extends State<OtpPage> {
     startTimer();
     for (int i = 0; i < _textControllers.length; i++) {
       _textControllers[i].addListener(() {
+        setState(() {
+          _areAllFieldsFilled = _textControllers.every((controller) => controller.text.isNotEmpty);
+        });
         if (_textControllers[i].text.length == 1 && i < _focusNodes.length - 1) {
           _focusNodes[i + 1].requestFocus();
         }
@@ -127,13 +134,16 @@ class _OtpPageState extends State<OtpPage> {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Gender()));
-                },
+                onPressed: _areAllFieldsFilled
+                    ? () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                }
+                    : null,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    Color(0xffCC323F),
-                  ),
+                  backgroundColor: canSubmit()
+                      ? MaterialStateProperty.all<Color>(Color(0xffCC323F))
+                      : MaterialStateProperty.all<Color>(Colors.grey),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white), 
                 ),
                 child: Text(
                   'Submit OTP',
